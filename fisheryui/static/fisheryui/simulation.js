@@ -44,7 +44,7 @@ function progressSimulation(fishery_id, steps) {
  * @description Frees memory of simulation on server, used when browser quits.
  */
 function endSimulation() {
-    $.post("end_simulation/", JSON.stringify({'fishery_id': SIMULATION.fishery_id }));
+    $.post("end_simulation/", {'fishery_id': SIMULATION.fishery_id });
 }
 /**
  * Class for simulation drawing objects (background, vegetation, fish).
