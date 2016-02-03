@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" href='{% static 'fisheryui/main.css' %}' />
+    <link rel="stylesheet" href='{% static 'fisheryui/simulation.css' %}' />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'fisheryui/simulation.js' %}"></script>
+    <meta charset="utf-8" />
+    <title>Simulation</title>
+</head>
+<body>
+<div id="page_container">
+{% csrf_token %}
+{% include './fisheryui/header.html' %}
+{% include './fisheryui/navbar.html' %}
+<div id="simulation">
+    <div id="simulation_display">
+        <canvas id="background" width=800 height=600>
+            Your browser does not support canvas. Please try again with a different browser.
+        </canvas>
+        <canvas id="vegetation_layer" width=800 height=600></canvas>
+        <canvas id="fish_layer" width=800 height=600></canvas>
+    </div>
+    <div id="simulation_buttons">
+        <div id="ui_entry">
+            <input type="submit" value="Reset fishery" name="init_fishery" onclick="window.init();" />
+        </div>
+        <div id="ui_entry">
+            <input type="submit" value="Start simulation" name="update_fishery" onclick="SIMULATION.ui.start_with_update();"/>
+        </div>
+        <br />
+        <div id="ui_entry">
+            <span>Fish pools alive</span><input type="text" name="fish_n" readonly="readonly"  maxlength="10" value="10"/>
+        </div>
+        <div id="ui_entry">
+            <span>Fish Yield</span><input type="text" name="fish_yield" readonly="readonly"  maxlength="10" value="0"/>
+        </div>
+                <div id="ui_entry">
+            <span>Vegetation</span><input type="text" name="vege_tot" readonly="readonly"  maxlength="10" value="0"/>
+        </div>
+    </div>
+    <div id="clear"></div>
+</div>
+
+    <div id="footer"></div>
+ </div>
+</body>
+</html>

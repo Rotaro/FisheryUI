@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+{% load staticfiles %}
+<link rel="stylesheet" href='{% static 'fisheryui/main.css' %}' />
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Test page</title>
+</head>
+<body>
+<div id="page_container">
+{% include './fisheryui/header.html' %}
+{% include './fisheryui/navbar.html' %}
+    <table>
+        {% for test_output in test_output_list %}
+            <tr><td>
+                {{ test_output }}
+            </td></tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

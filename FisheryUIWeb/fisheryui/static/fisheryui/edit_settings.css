@@ -1,0 +1,28 @@
+﻿#settings {
+    padding:10px;
+}
+#settings table {
+    border:3px solid black;
+    border-radius: 1px;
+    margin:auto;
+    background: #80cbc4;
+}
+#settings td {
+    border: 1px solid black;
+}
+#settings table tr:nth-child(odd) {
+    background: #b8d1f3;
+    }
+#settings input {
+    background: transparent;
+    border: 0;
+}
+#settings [name=update_settings] {
+    background: #b8d1f3;
+    border: 3px;
+    border-radius: 1px;
+    position: absolute;
+    margin: auto;
+    left:0;
+    right: 0;
+}

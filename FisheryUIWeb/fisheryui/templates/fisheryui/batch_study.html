@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% load staticfiles %}
+    <link rel="stylesheet" href='{% static 'fisheryui/main.css' %}' />
+    <link rel="stylesheet" href='{% static 'fisheryui/batch_study.css' %}' />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static 'fisheryui/batch_study.js' %}"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {packages: ['corechart']});
+    </script>
+    <meta charset="utf-8" />
+    <title>Fishery Simulation Batch Study</title>
+</head>
+<body>
+<div id="page_container">
+{% include './fisheryui/header.html' %}
+{% include './fisheryui/navbar.html' %}
+<div id="break"></div>
+    <div id="batch_study">
+        <div id="description">
+            <p>
+                Sweeps over the desired parameter ranges and calculates statistics.
+            </p>
+        </div>
+        <div id="settings">
+            <form autocomplete="off">
+            <table id="stats">
+                <thead>
+                    <tr>
+                        <th>Steps per combination</th>
+                        <th>Combinations</th>
+                        <th>Total number of steps</th>
+                        <th>Estimated time (sec)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="stats_steps"><input type="number" min="1" value="10000" onchange="updateStats();"/></td>
+                        <td id="stats_combos"><input type="number" min="0" value="0" disabled="disabled"/></td>
+                        <td id="stats_tot_steps"><input type="number" min="0" value="0" disabled="disabled"/></td>
+                        <td id="stats_est_time"><input type="number" min="0" value="0" disabled="disabled"/></td>
+                        <td><input type="button" value="Start study" onclick="runStudy();" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="settings">
+                <thead>
+                    <tr>
+                        <th>Include</th>
+                        <th>Setting</th>
+                        <th>Index</th>
+                        <th>Value</th>
+                        <th class="number">Start</th>
+                        <th class="number">End</th>
+                        <th class="number">Interval</th>
+                        <th class="text">Values Included</th>
+                        <th>Default Sweep</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for setting in sess_settings %}
+                    <tr id="{{ setting.0 }}">
+                        <td id="setting_included"><input type="checkbox" onchange="includeSetting(this)" /></td>
+                        <td id="setting_id">{{ setting.0 }}</td>
+                        <td id="setting_idx"><input type="number" readonly="readonly" value="{{ setting.1 }}" /></td>
+                        <td id="setting_val"><input type="number" value="{{ setting.2 }}" /></td>
+                        <td id="setting_srt"></td>
+                        <td id="setting_end"></td>
+                        <td id="setting_int"></td>
+                        <td id="values_inc"></td>
+                        <td id="setting_default"><input type="checkbox" onchange="setDefaultSetting(this)"/></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+﻿#batch_study {
+    width:100%
+}
+#description {
+    width:100%;
+    background:#80cbc4;
+    text-align:center;
+    padding:5px;
+    border: 2px solid;
+    border-radius: 1px;
+    box-sizing: border-box;
+    
+}
+#description p{ 
+    margin: 0;
+}
+#stats table {
+    border:3px solid black;
+    border-radius: 1px;
+    margin: 4px auto auto auto;
+    background: #80cbc4;
+}
+#settings table {
+    border:3px solid black;
+    border-radius: 1px;
+    margin: 4px auto auto auto;
+    background: #80cbc4;
+}
+table#settings th.number {
+    width: 58px;
+
+}
+table#settings th.text {
+    width: 200px;
+}
+table#settings td {
+    border: 1px solid black;
+}
+table#settings tr:nth-child(odd) {
+    background: #b8d1f3;
+}
+table#settings input[type="text"] {
+    width: 192px;
+}
+table#settings input[type="number"] {
+    width: 50px;
+}
+.chart {
+    border:3px solid;
+    float:left;
+    margin:3px;
+    text-align:center;
+    overflow: hidden;
+}
+.drop_down {
+    height: 15%;
+}
+.drop_down div {
+    border: 1px solid;
+    border-radius: 1px;
+    float: left;
+    background-color: #b8d1f3;
+    margin: auto;
+    width:100%;
+    height: 48%;
+}
+.chart_area {
+    height: 85%;
+}

@@ -1,0 +1,61 @@
+﻿html, body {
+    height:100%;
+    margin:0;
+}
+#break {
+    clear: left;
+}
+#page_container {
+    width: 1200px;
+    height: 100%;
+    margin:auto;
+    background-color: #E0F2F1;
+}
+#header {
+    background: #009688;
+    height: 8%;
+    width: 100%;
+    display:table;
+}
+#header h1 {
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
+    font: bold 3em "Tahoma";    
+}
+#navbar {
+    margin-top: 0px;
+    position: center;
+    height: 3.5%;
+    width: 100%;
+    padding: 5px 0px;
+    background: #26A69A;
+    text-align: center;
+}
+#navbar ul {
+    height: auto;
+    padding: 8px 0px;
+    margin: 0px;
+}
+#navbar li {
+    vertical-align: middle;
+    height:100%;
+    width:100%;
+    display: inline;
+    padding: 10px 50px;
+}
+#navbar a {
+    font: 1.00em "Rockwell";
+}
+#navbar li:hover {
+    height:100%;
+    width:100%;
+    background-color: #0ce9d4;
+    cursor:pointer;
+}
+#navbar li:hover a {
+    font-weight: bold;
+}
+
+
+
