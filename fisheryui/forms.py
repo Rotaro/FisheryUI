@@ -1,11 +1,14 @@
 ﻿"""Definition of forms in fisheryui.
 """
-
+import django
 from django.forms import ModelForm, BaseModelFormSet, ValidationError
 from django.forms import IntegerField, DecimalField, CharField, ModelChoiceField
-from django.forms.extras.widgets import SelectDateWidget, Select
+if django.VERSION[:2] >= (1, 9):
+    from django.forms.widgets import SelectDateWidget, Select
+else:
+    from django.forms.extras.widgets import SelectDateWidget, Select
 
-from . import models
+from fisheryui import models
 
 import fishery
 

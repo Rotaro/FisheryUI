@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 import json
 
 from fisheryui.views import views_support
-from .. import models
+from fisheryui import models
 
 import fishery
 
@@ -19,7 +19,8 @@ def get_settings(request):
     return JsonResponse({"settings" : settings})
 
 def test_view_function(request):
-    context = {'test_output_list' : [views_support.SETTING_ORDER, views_support.get_settings_default()]}
+    context = {'test_output_list' : [fishery.MPyGetFisherySettingOrder(), 
+                                     views_support.get_settings_default()]}
     return render(request, './fisheryui/testspage.html', context)
 
 @require_POST
@@ -49,26 +50,18 @@ def batch_study(request):
     """View for editing batch study settings.
     """
     
-    #if new session (visitor)
-    if not request.session.exists(request.session.session_key):
-        request.session.create() 
-    session_obj = models.Session.objects.get(session_key=request.session.session_key)
-    #if no settings for session in database, create new ones
-    if len(models.SettingValueSession.objects.filter(session_id=session_obj)) == 0:
-        models.SettingValueSession.cust.create_settings(session_obj)
+    session_obj = views_support.create_settings(request)
 
     #get settings
     sess_settings = views_support.get_settings_session(session_obj)
     list_sess_settings = []
     #convert to list of [settingname, index, value]
-    for sett in views_support.SETTING_ORDER:
+    for sett in fishery.MPyGetFisherySettingOrder():
         if not isinstance(sess_settings[sett], list):
             list_sess_settings.append([sett, 0, sess_settings[sett]])
-
     for sett in views_support.SETTINGS_LIST:
         for i in range(0, len(sess_settings[sett])):
             list_sess_settings.append([sett, i, sess_settings[sett][i]])
-
 
     return render(request, './fisheryui/batch_study.html', {"sess_settings": list_sess_settings})
 
@@ -76,8 +69,28 @@ def batch_study(request):
 def batch_run(request):
     """Runs fishery batch study. 
 
-    Request should be POST and contain list of setting combinations under "jobs" , static settings under
-    'static_settings' and and number of steps per combination under n_steps.
+    Request (POST) should contain the following (JSON dictionary):
+    jobs:               List of batch study combinations. Each combination
+                        should consist of the following:
+                        [study_index#1, study_index#2, study_index#3,
+                        (for frontend)
+                        setting_id, setting_index, setting_value
+                        default_setting_id, default_setting_index, 
+                        default_setting_value]
+    static_settings:    Settings which aren't changed during study.
+    n_steps:            Number of steps per study combination.
+
+    Returns (JSON dictionary)
+    ----------
+    results:
+        List of simulation results with combination information:
+        [study_index#1, study_index#2, study_index#3, (for frontend)
+         setting_id, setting_index, setting_value
+         default_setting_id, default_setting_index, default_setting_value,
+         [total fish population, total fishing yield, total vegetation level,
+          std dev of fish population, std dev of fishing yield, 
+          std dev of vegetation level, steps progressed, debugging variable, 
+          fishing chance of simulation.]]
     """
     #decode data in request
     request_data = json.loads(request.body.decode("ascii"))
@@ -94,26 +107,22 @@ def batch_run(request):
         else:
             static_settings_dict[setting[0]] = setting[2]
     
-    #[setting, #setting value, #default setting value, 
-    #setting_id, setting_index, setting_value
-    #default_setting_id, default_setting_index, default_setting_value]
-
-    #process jobs
+    #Process batch study jobs
     simulation_results = []
     i = 0
     print(jobs)
     print(len(jobs))
-
     for job in jobs:
-        #store job information
+        #Store job information in results
         simulation_results.append(job)
-        #create settings for run
+        #Create settings dictionary for job
         tmp_settings = static_settings_dict.copy()
+        #Add job setting
         if job[3] in views_support.SETTINGS_LIST:
             tmp_settings[job[3]][job[4]] = job[5]
         else:
             tmp_settings[job[3]] = job[5]
-        #create default setting for run
+        #Add default setting
         if job[6] in views_support.SETTINGS_LIST:
             tmp_settings[job[6]][job[7]] = job[8]
         else:
@@ -122,7 +131,6 @@ def batch_run(request):
         simulation_results[i].append(fishery.MPyUpdateFishery(fishery_id, n_steps))
         i = i + 1
         fishery.MPyDestroyFishery(fishery_id)
-
 
     print(simulation_results)
     return JsonResponse({'results' : simulation_results})

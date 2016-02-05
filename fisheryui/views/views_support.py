@@ -3,10 +3,12 @@ import fishery
 
 #List settings
 SETTINGS_LIST = ["vegetation_consumption", "fish_consumption"]
-#Indices of list settings in Django model database
-SETTINGS_LIST_INDICES = [models.SettingID.objects.get(name=x).id for x in SETTINGS_LIST]
 #Order of settings, used to make sure settings views always have the same order
-SETTING_ORDER =  fishery.MPyGetFisherySettingOrder()
+
+def get_settings_list_indices():
+    """Indices of list settings in Django model database.
+    """
+    return [models.SettingID.objects.get(name=x).id for x in SETTINGS_LIST]
 
 def get_settings_default():
     """Retrieves default fishery simulation settings as a dictionary.
@@ -18,7 +20,7 @@ def get_settings_default():
     """
 
     settings = {}
-    for setting in SETTING_ORDER:
+    for setting in fishery.MPyGetFisherySettingOrder():
         setting_vals = models.SettingValue.as_list.get(setting)
         if (len(setting_vals) == 1 and setting not in SETTINGS_LIST):
             settings[setting] = setting_vals[0]
@@ -39,7 +41,7 @@ def get_settings_session(session):
     sess_settingvalues = models.SettingValueSession.objects.filter(session_id=session)
     
     settings = {}
-    for setting in SETTING_ORDER:
+    for setting in fishery.MPyGetFisherySettingOrder():
         #get specific setting for session
         setting_vals = sess_settingvalues.filter(
             setting_id=models.SettingID.objects.get(name=setting).id)
@@ -57,6 +59,7 @@ def create_settings(request):
     Returns
     ----------
     session_obj : :class:`models.SettingValueSession`
+        Session model instance.
     """
 
     if not request.session.exists(request.session.session_key):

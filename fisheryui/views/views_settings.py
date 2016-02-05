@@ -2,8 +2,8 @@ from django.forms import modelformset_factory, modelform_factory
 from django.shortcuts import render
 
 from fisheryui.views import views_support
-from .. import models
-from .. import forms
+from fisheryui import models
+from fisheryui import forms
 
 
 def edit_settings(request):

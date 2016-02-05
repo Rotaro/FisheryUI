@@ -29,6 +29,7 @@ def create_simulation(request):
     settings = views_support.get_settings_session(session_obj)
 
     try:
+        fishery.MPySetRNGSeed(-1)
         fishery_id = fishery.MPyCreateFishery(settings)
         print("Created fishery %d." % fishery_id)
     except Exception as e:
@@ -52,9 +53,8 @@ def end_simulation(request):
         Success of fishery deletion.
     """
     
-    request_data = json.loads(request.body.decode("ascii"))
-    if "fishery_id" in request_data:
-        fishery_id = int(request_data["fishery_id"])
+    if "fishery_id" in request.POST:
+        fishery_id = int(request.POST["fishery_id"])
         try:
             fishery.MPyDestroyFishery(fishery_id)
             print("Destroyed fishery %d" % fishery_id)
