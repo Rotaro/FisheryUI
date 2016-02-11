@@ -85,14 +85,12 @@ def batch_run(request):
     results:
         List of simulation results with combination information:
         [study_index#1, study_index#2, study_index#3, (for frontend)
-         setting_id, setting_index, setting_value
-         default_setting_id, default_setting_index, default_setting_value,
          [total fish population, total fishing yield, total vegetation level,
           std dev of fish population, std dev of fishing yield, 
           std dev of vegetation level, steps progressed, debugging variable, 
           fishing chance of simulation.]]
     """
-    #decode data in request
+    #parse request
     request_data = json.loads(request.body.decode("ascii"))
     jobs = request_data["jobs"]
     static_settings = request_data["static_settings"]
@@ -114,7 +112,7 @@ def batch_run(request):
     print(len(jobs))
     for job in jobs:
         #Store job information in results
-        simulation_results.append(job)
+        simulation_results.append(job[0:3])
         #Create settings dictionary for job
         tmp_settings = static_settings_dict.copy()
         #Add job setting

@@ -16,7 +16,6 @@
 
 ptvs_virtualenv_proxy.py
 readme.mht
-FisheryUIWeb/**
 FisheryUIWeb/settings.py
 FisheryUIWeb/urls.py
 FisheryUIWeb/wsgi.py
